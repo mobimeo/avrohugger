@@ -17,7 +17,7 @@ import scala.io.Source
   */
 object AvscFileSorter {
 
-  def sortSchemaFiles(files: mutable.Iterable[File]): Seq[File] = {
+  def sortSchemaFiles(files: Iterable[File]): Seq[File] = {
     val sortedButReversed = mutable.ArrayBuffer.empty[File]
     def normalizeInput(files: List[File]): List[File] = files.sortBy(file => file.getName)
     var pending: Iterable[File] = normalizeInput(files.toList)
