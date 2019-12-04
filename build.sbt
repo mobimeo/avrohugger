@@ -7,7 +7,11 @@ lazy val commonSettings = Seq(
   scalacOptions in Test ++= Seq("-Yrangepos"),
   scalaVersion := "2.13.1",
   crossScalaVersions := Seq("2.12.10", scalaVersion.value),
-  resolvers += Resolver.typesafeIvyRepo("releases"),
+  resolvers ++= Seq(
+    "Mobimeo libraries" at "https://nexus.unterwegs.io/repository/maven-public/",
+    "Nexus releases" at "https://nexus.unterwegs.io/repository/maven-releases/",
+    "Nexus central" at "https://nexus.unterwegs.io/repository/maven-central/"
+  ),
   libraryDependencies += "org.apache.avro" % "avro" % avroVersion,
   libraryDependencies += "org.apache.avro" % "avro-compiler" % avroVersion,
   libraryDependencies := { CrossVersion.partialVersion(scalaVersion.value) match {
@@ -25,12 +29,7 @@ lazy val commonSettings = Seq(
   libraryDependencies += "org.specs2" %% "specs2-core" % "4.8.0" % "test",
   publishMavenStyle := true,
   publishArtifact in Test := false,
-  publishTo := Some(
-  if (isSnapshot.value)
-    Opts.resolver.sonatypeSnapshots
-  else
-    Opts.resolver.sonatypeStaging
-  ),
+  publishTo := Some("maven-releases" at "https://nexus.unterwegs.io/repository/maven-releases/"),
   pomIncludeRepository := { _ => false },
   licenses := Seq("Apache 2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0")),
   homepage := Some(url("https://github.com/mobimeo/avrohugger"))
