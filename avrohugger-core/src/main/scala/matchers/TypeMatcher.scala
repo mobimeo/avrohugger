@@ -1,6 +1,7 @@
 package avrohugger
 package matchers
 
+import format.AvroString
 import avrohugger.matchers.custom.CustomTypeMatcher
 import avrohugger.stores.ClassStore
 import avrohugger.types._
@@ -17,6 +18,8 @@ class TypeMatcher(
   val avroScalaTypes: AvroScalaTypes,
   //e.g. ("com.example.idl"->"com.example.model")
   val customNamespaces: Map[String, String]) {
+
+  val stringType: Type = if (AvroString.useUtf8()) AvroString.utf8Class() else AvroString.stringClass()
 
   def toScalaType(
     classStore: ClassStore,
@@ -58,7 +61,7 @@ class TypeMatcher(
         case Schema.Type.STRING   =>
           LogicalType.foldLogicalTypes(
             schema = schema,
-            default = StringClass) {
+            default = stringType) {
             case UUID => RootClass.newClass(nme.createNameType("java.util.UUID"))
           }
         case Schema.Type.FIXED    => sys.error("FIXED datatype not yet supported")
@@ -139,9 +142,6 @@ class TypeMatcher(
 
   //Scavro requires Java types be generated for mapping Java classes to Scala
 
-  // in the future, scavro may allow this to be set
-  val avroStringType = TYPE_REF("CharSequence") 
-
   def toJavaType(
     classStore: ClassStore,
     namespace: Option[String],
@@ -160,14 +160,14 @@ class TypeMatcher(
         case Schema.Type.FLOAT => TYPE_REF("java.lang.Float")
         case Schema.Type.LONG => TYPE_REF("java.lang.Long")
         case Schema.Type.BOOLEAN => TYPE_REF("java.lang.Boolean")
-        case Schema.Type.STRING => avroStringType
+        case Schema.Type.STRING => if (AvroString.useUtf8()) AvroString.utf8Class() else AvroString.charSequenceClass()
         case Schema.Type.ARRAY => {
           val avroElement = schema.getElementType
           val elementType = toJavaType(classStore, namespace, avroElement)
           TYPE_REF(REF("java.util.List") APPLYTYPE(elementType))
         }
         case Schema.Type.MAP      => {
-          val keyType = avroStringType
+          val keyType = AvroString.charSequenceClass()
           val valueType = toJavaType(classStore, namespace, schema.getValueType)
           TYPE_REF(REF("java.util.Map") APPLYTYPE(keyType, valueType))
         }

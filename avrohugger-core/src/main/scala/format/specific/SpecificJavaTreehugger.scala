@@ -82,7 +82,6 @@ object SpecificJavaTreehugger extends JavaTreehugger {
     val outDir = System.getProperty("java.io.tmpdir")
     writeJavaTempFile(namespace, schema, outDir)
     val tempPath = outDir + "/" + schema.getFullName.replace('.','/') + ".java"
-    val tempFile = new File(tempPath)
     val fileContents = scala.io.Source.fromFile(tempPath)
     val schemaPackage = "package " + schema.getNamespace
     val updatedPackage = namespace match {

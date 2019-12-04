@@ -1,10 +1,9 @@
 
 import avrohugger.format.Standard
-
-import avrohugger.tool.{Main, Directory, GeneratorTool}
-import org.apache.avro.tool.Tool
+import avrohugger.tool.{Directory, GeneratorTool}
 
 import org.specs2._
+
 import scala.collection.JavaConverters._
 import scala.util.Try
 

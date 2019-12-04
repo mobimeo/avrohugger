@@ -1,14 +1,13 @@
 package avrohugger
 package matchers
 
+import avrohugger.format.AvroString
 import avrohugger.matchers.custom.CustomDefaultParamMatcher
 import avrohugger.stores.ClassStore
 import avrohugger.types._
 import org.apache.avro.Schema
 import org.apache.avro.Schema.Type
 import treehugger.forest._
-import definitions._
-import treehugger.forest
 import treehuggerDSL._
 
 
@@ -44,7 +43,7 @@ object DefaultParamMatcher {
       case Type.STRING  =>
         LogicalType.foldLogicalTypes[Tree](
           schema = avroSchema,
-          default = LIT("")) {
+          default = if (AvroString.useUtf8()) NEW("org.apache.avro.util.Utf8", LIT("")) else LIT("")) {
           case UUID => REF("java.util.UUID.randomUUID")
         }
       case Type.NULL    => NULL

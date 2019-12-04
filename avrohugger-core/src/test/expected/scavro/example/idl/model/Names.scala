@@ -22,7 +22,7 @@ object Names {
     override val avroClass: Class[JNames] = classOf[JNames]
     override val schema: Schema = JNames.getClassSchema()
     override val fromAvro: (JNames) => Names = {
-      (j: JNames) => Names(j.getPublic$.toString, j.getEndsWith.toString)
+      (j: JNames) => Names(j.getPublic$, j.getEndsWith)
     }
   }
 }
