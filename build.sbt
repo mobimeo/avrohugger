@@ -39,20 +39,20 @@ lazy val avrohugger = (project in file("."))
   .settings(
     commonSettings,
   ).aggregate(`avrohugger-core`, `avrohugger-filesorter`, `avrohugger-tools`)
-  
+
 
 lazy val `avrohugger-core` = (project in file("avrohugger-core"))
   .settings(
     commonSettings,
     libraryDependencies += "com.eed3si9n" %% "treehugger" % "0.4.4"
   )
-  
+
 lazy val `avrohugger-filesorter` = (project in file("avrohugger-filesorter"))
   .settings(
     commonSettings,
     libraryDependencies += "io.spray" %% "spray-json" % "1.3.5"
   )
-  
+
 lazy val `avrohugger-tools` = (project in file("avrohugger-tools"))
   .settings(
     commonSettings,
