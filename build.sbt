@@ -1,7 +1,7 @@
 lazy val avroVersion = "1.9.1"
 
 lazy val commonSettings = Seq(
-  organization := "com.mobimeo",
+  organization := "com.mobimeo.data",
   version := "1.0.0-RC21",
   scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature", "-Ywarn-value-discard"),
   scalacOptions in Test ++= Seq("-Yrangepos"),
